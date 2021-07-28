@@ -4,6 +4,8 @@ const adherentController = require('../controllers/adherent.controller');
 
 //auth
 router.post("/register", authController.addAdherent);
+router.post('/login', authController.signIn);
+router.get('/logout', authController.logout);
 
 //adherent DB
 router.get('/', adherentController.getAll);

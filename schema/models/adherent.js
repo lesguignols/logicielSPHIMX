@@ -66,5 +66,19 @@ adherentSchema.pre("save", async function(next) {
     next();
 }); */
 
+adherentSchema.statics.login = async function(card, code) {
+    const adherent = await this.findOne({ card }).select('-secret_code');
+    if (adherent) {
+        const auth = await bcrypt.compare(code, adherent.code);
+        if (auth) {
+            return adherent;
+        } else {
+            res.status(401).send(`Code invalide!`)
+        }
+    } else {
+        res.status(401).send(`Carte invalide!`)
+    }
+};
+
 const AdherentModel = mongoose.model('adherent', adherentSchema);
 module.exports = AdherentModel;

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const adherentSchema = new mongoose.Schema({
     card: {
@@ -40,10 +41,10 @@ const adherentSchema = new mongoose.Schema({
         type: Boolean
     },
     code: {
-        type: Number
+        type: String
     },
     secret_code: {
-        type: Number
+        type: String
     },
     administrator: {
         type: Boolean
@@ -52,6 +53,18 @@ const adherentSchema = new mongoose.Schema({
         type: Boolean
     }
 }, { collection: 'adherent', versionKey: false });
+
+/* //Permet de crypter le code et le secret_code avant enregistrement dans DB
+adherentSchema.pre("save", async function(next) {
+    const salt = await bcrypt.genSalt();
+    if (this.code != null) {
+        this.code = await bcrypt.hash(this.code, salt);
+    }
+    if (this.secret_code != null) {
+        this.secret_code = await bcrypt.hash(this.secret_code, salt);
+    }
+    next();
+}); */
 
 const AdherentModel = mongoose.model('adherent', adherentSchema);
 module.exports = AdherentModel;

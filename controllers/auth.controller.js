@@ -1,4 +1,4 @@
-const AdherentModel = require('../schema/models/adherent');
+const AdherentModel = require('../models/adherent');
 const { addAdherentErrors, signInErrors } = require('../utils/errors.utils')
 const jwt = require('jsonwebtoken');
 

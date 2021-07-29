@@ -1,6 +1,6 @@
-const AdherentModel = require('../schema/models/adherent');
-const PriceModel = require('../schema/models/price');
-const TrainingModel = require('../schema/models/training');
+const AdherentModel = require('..//models/adherent');
+const PriceModel = require('..//models/price');
+const TrainingModel = require('..//models/training');
 const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 
@@ -32,23 +32,8 @@ module.exports.getByCard = (req, res) => {
     }).select('-code -secret_code');
 }
 
-module.exports.getByCardAndCode = async(req, res) => {
-    const adherent = await AdherentModel.findOne({ card: req.body.card }).select('-secret_code');
-    if (adherent) {
-        var code = req.body.code.toString();
-        const auth = await bcrypt.compare(code, adherent.code);
-        if (auth) {
-            res.send(adherent);
-        } else {
-            res.status(401).send(`Code invalide!`)
-        }
-    } else {
-        res.status(401).send(`Carte invalide!`)
-    }
-}
-
 module.exports.getByName = (req, res) => {
-    if (req.body.name.length >= 3 && req.body.name.length <= 55) {
+    if (req.body.name.length <= 3 || req.body.name.length >= 55) {
         return res.status(400).send(`"${req.body.name}" n'est pas un nom valide!`);
     }
 
@@ -62,7 +47,7 @@ module.exports.getByName = (req, res) => {
 }
 
 module.exports.getByFirstName = (req, res) => {
-    if (req.body.firstName.length >= 3 && req.body.firstName.length <= 55) {
+    if (req.body.firstName.length <= 3 && req.body.firstName.length >= 55) {
         return res.status(400).send(`"${req.body.firstName}" n'est pas un prénom valide!`);
     }
 

@@ -9,17 +9,16 @@ router.get('/logout', authController.logout);
 
 //adherent DB
 router.get('/', adherentController.getAll);
-router.get('/:id', adherentController.getInfo);
-router.get('/card/:card', adherentController.getByCard);
-router.get('/cardAndCode/:cardAndCode', adherentController.getByCardAndCode);
-router.get('/name/:name', adherentController.getByName);
-router.get('/firstName/:firstName', adherentController.getByFirstName);
-router.get('/price/:price', adherentController.getByPrice);
-router.get('/training/:training', adherentController.getByTraining);
-router.get('/active/:active', adherentController.getByActive);
-router.get('/member/:member', adherentController.getByMember);
-router.get('/administrator/:administrator', adherentController.getByAdministrator);
-router.get('/superAdministrator/:superAdministrator', adherentController.getBySuperAdministrator);
+router.get('/id/:id', adherentController.getInfo);
+router.get('/card', adherentController.getByCard);
+router.get('/name', adherentController.getByName);
+router.get('/firstName', adherentController.getByFirstName);
+router.get('/price', adherentController.getByPrice);
+router.get('/training', adherentController.getByTraining);
+router.get('/active', adherentController.getByActive);
+router.get('/member', adherentController.getByMember);
+router.get('/administrator', adherentController.getByAdministrator);
+router.get('/superAdministrator', adherentController.getBySuperAdministrator);
 
 //update adherent by ID
 router.put('/updateCard/:id', adherentController.updateCard);

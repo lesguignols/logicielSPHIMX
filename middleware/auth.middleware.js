@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const AdherentModel = require('../schema/models/adherent');
+const AdherentModel = require('../models/adherent');
 
 module.exports.checkAdherent = (req, res, next) => {
     const token = req.cookies.jwt;

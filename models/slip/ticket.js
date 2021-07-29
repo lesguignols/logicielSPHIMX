@@ -2,20 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const slipTicketSchema = new Schema({
-    _id: {
-        type: mongoose.ObjectId,
-        required: true
+    date: {
+        type: String
     },
-    date: String,
     member: {
         type: Schema.Types.ObjectId,
-        ref: 'adherent'
+        ref: 'adherent',
+        require: true
     },
     total_amount: {
         type: Number,
         default: 0
     },
-    num_slip: String,
+    num_slip: {
+        type: String
+    },
     fifty: {
         type: Number,
         default: 0
@@ -34,4 +35,5 @@ const slipTicketSchema = new Schema({
     }
 }, { collection: 'slipTicket', versionKey: false });
 
-module.exports = mongoose.model('SlipTicket', slipTicketSchema);
+const SlipTicketModel = mongoose.model('slipTicket', slipTicketSchema);
+module.exports = SlipTicketModel;

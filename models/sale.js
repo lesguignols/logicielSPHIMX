@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const saleSchema = new Schema({
-    _id: mongoose.ObjectId,
     seller: {
         type: Schema.Types.ObjectId,
         ref: 'adherent',
@@ -14,10 +13,20 @@ const saleSchema = new Schema({
     },
     date: String,
     products: {
-        type: [Schema.Types.ObjectId],
-        ref: 'linesale'
+        type: [{
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: 'product'
+            },
+            quantity: Number,
+            sum: Number
+        }]
+    },
+    offers: {
+        type: [Schema.Types.ObjectId]
     },
     price_tot: Number
 }, { collection: 'sale', versionKey: false });
 
-module.exports = mongoose.model('Sale', saleSchema);
+const SaleModel = mongoose.model('sale', saleSchema);
+module.exports = SaleModel;

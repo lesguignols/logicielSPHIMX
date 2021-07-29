@@ -8,10 +8,19 @@ const app = express();
 
 //const pour les routes
 const adherentRoutes = require('./routes/adherent.routes');
+const billRoutes = require('./routes/bill.routes');
+const cashFundRoutes = require('./routes/cashfund.routes');
+const inventoryRoutes = require('./routes/inventory/inventory.routes');
+const inventorySupposedRoutes = require('./routes/inventory/inventory.supposed.routes');
+const offerRoutes = require('./routes/offer.routes');
 const priceRoutes = require('./routes/price.routes');
 const productRoutes = require('./routes/product.routes');
 const providerRoutes = require('./routes/provider.routes');
+const reductionRoutes = require('./routes/reduction.routes');
 const settingsRoutes = require('./routes/settings.routes');
+const saleRoutes = require('./routes/sale.routes');
+const slipCoinsRoutes = require('./routes/slip/coins.routes');
+const slipTicketRoutes = require('./routes/slip/ticket.routes');
 const trainingRoutes = require('./routes/training.routes');
 
 app.use(bodyParser.json());
@@ -27,10 +36,19 @@ app.get('/jwtid', requireAuth, (req, res) => {
 
 //routes
 app.use('/api/adherent', adherentRoutes);
+app.use('/api/bill', billRoutes);
+app.use('/api/cashfund', cashFundRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/inventorysupposed', inventorySupposedRoutes);
+app.use('/api/offer', offerRoutes);
 app.use('/api/price', priceRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/provider', providerRoutes);
+app.use('/api/reduction', reductionRoutes);
+app.use('/api/sale', saleRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/slipcoins', slipCoinsRoutes);
+app.use('/api/slipticket', slipTicketRoutes);
 app.use('/api/training', trainingRoutes);
 
 //server

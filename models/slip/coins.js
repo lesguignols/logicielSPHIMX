@@ -2,22 +2,22 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const slipCoinsSchema = new Schema({
-    _id: {
-        type: mongoose.ObjectId,
-        required: true
-    },
     date: {
         type: String
     },
     member: {
         type: Schema.Types.ObjectId,
-        ref: 'adherent'
+        ref: 'adherent',
+        require: true
     },
     total_amount: {
         type: Number,
         default: 0
     },
-    num_slip: String,
+    num_slip: {
+        type: String,
+        require: true
+    },
     two: {
         type: Number,
         default: 0
@@ -52,4 +52,5 @@ const slipCoinsSchema = new Schema({
     }
 }, { collection: 'slipCoins', versionKey: false });
 
-module.exports = mongoose.model('SlipCoins', slipCoinsSchema);
+const SlipCoinsModel = mongoose.model('slipCoins', slipCoinsSchema);
+module.exports = SlipCoinsModel;

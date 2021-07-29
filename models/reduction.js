@@ -12,4 +12,5 @@ const reductionSchema = new Schema({
     }
 }, { collection: 'reduction', versionKey: false });
 
-module.exports = mongoose.model('Reduction', reductionSchema);
+const ReductionModel = mongoose.model('reduction', reductionSchema);
+module.exports = ReductionModel;

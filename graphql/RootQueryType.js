@@ -423,7 +423,7 @@ const RootQueryType = new GraphQLObjectType({
             type: new GraphQLList(SaleType),
             args: { buyer: { type: new GraphQLNonNull(GraphQLString) } },
             resolve(parent, args) {
-                return Sale.find({ seller: args.buyer });
+                return Sale.find({ buyer: args.buyer });
             }
         },
         saleByPeriod: {

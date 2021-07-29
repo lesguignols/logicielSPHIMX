@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const cashFundSchema = new Schema({
-    _id: {
-        type: mongoose.ObjectId,
-        required: true
-    },
     date: {
         type: String
     },
@@ -67,4 +63,5 @@ const cashFundSchema = new Schema({
     }
 }, { collection: 'cashFund', versionKey: false });
 
-module.exports = mongoose.model('CashFund', cashFundSchema);
+const cashFundModel = mongoose.model('cashFund', cashFundSchema);
+module.exports = cashFundModel;

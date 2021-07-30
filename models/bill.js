@@ -28,7 +28,7 @@ const billSchema = new Schema({
     price_tot: {
         type: Number
     }
-}, { collection: 'bills', versionKey: false });
+}, { collection: 'bill', versionKey: false });
 
 const BillModel = mongoose.model('bill', billSchema);
 module.exports = BillModel;

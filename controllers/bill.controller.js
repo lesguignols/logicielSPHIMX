@@ -1,4 +1,5 @@
 const BillModel = require('../models/bill');
+const InventorySupposedModel = require('../models/inventory/inventory.supposed');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports.getInfo = async(req, res) => {
@@ -67,15 +68,17 @@ module.exports.getAll = async(req, res) => {
 }
 
 module.exports.addBill = async(req, res) => {
-
-    const productArray = JSON.parse(JSON.stringify(args.products));
     var price_tot = 0;
-    var i = 0;
 
-    while (i < productArray.length) {
-        price_tot += productArray[i].price_line;
-        await InventorySupposedModel.bill(productArray[i].product, productArray[i].quantity);
-        i++;
+    if (req.body.products) {
+        const productArray = JSON.parse(JSON.stringify(req.body.products));
+        var i = 0;
+
+        while (i < productArray.length) {
+            price_tot += productArray[i].price_line;
+            await InventorySupposedModel.bill(productArray[i].product, productArray[i].quantity);
+            i++;
+        }
     }
 
     let today = new Date();

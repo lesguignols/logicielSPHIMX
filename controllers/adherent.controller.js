@@ -3,6 +3,7 @@ const PriceModel = require('..//models/price');
 const TrainingModel = require('..//models/training');
 const ObjectId = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
+const fs = require("fs");
 
 module.exports.getInfo = (req, res) => {
     if (!ObjectId.isValid(req.params.id)) {
@@ -147,16 +148,23 @@ module.exports.updateCard = async(req, res) => {
         if (req.body.card.length != 13) {
             return res.status(400).send(`"${req.body.card}" n'est pas un numéro de carte valide!`);
         } else {
+            const adherent = await AdherentModel.findById(req.params.id).select('-code -secret_code');
+            const fileName = adherent.card + ".png";
+            const newName = req.body.card + ".png";
+
+            fs.renameSync(`${__dirname}/../client/public/adherents/${fileName}`, `${__dirname}/../client/public/adherents/${newName}`)
+
             await AdherentModel.findByIdAndUpdate(req.params.id, {
                     $set: {
                         card: req.body.card,
+                        link_photo: "./uploads/profil/" + newName,
                     }
                 }, { new: true, upsert: true, setDefaultsOnInsert: true },
                 (err, docs) => {
                     if (!err) return res.send(docs);
                     if (err) return res.status(500).send({ message: err });
                 }
-            );
+            ).select('-code -secret_code');
         }
     } catch (err) {
         return res.status(500).json({ message: err });
@@ -180,7 +188,7 @@ module.exports.updateName = async(req, res) => {
                     if (!err) return res.send(docs);
                     if (err) return res.status(500).send({ message: err });
                 }
-            );
+            ).select('-code -secret_code');
         }
     } catch (err) {
         return res.status(500).json({ message: err });
@@ -204,31 +212,7 @@ module.exports.updateFirstName = async(req, res) => {
                     if (!err) return res.send(docs);
                     if (err) return res.status(500).send({ message: err });
                 }
-            );
-        }
-    } catch (err) {
-        return res.status(500).json({ message: err });
-    }
-}
-
-module.exports.updateLinkPhoto = async(req, res) => {
-    if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send(`"${req.params.id}" n'est pas un ID!`);
-    }
-    try {
-        if (req.body.link_photo == "") {
-            return res.status(400).send(`"${req.body.link_photo}" n'est pas un lien valide!`);
-        } else {
-            await AdherentModel.findByIdAndUpdate(req.params.id, {
-                    $set: {
-                        link_photo: req.body.link_photo,
-                    }
-                }, { new: true, upsert: true, setDefaultsOnInsert: true },
-                (err, docs) => {
-                    if (!err) return res.send(docs);
-                    if (err) return res.status(500).send({ message: err });
-                }
-            );
+            ).select('-code -secret_code');
         }
     } catch (err) {
         return res.status(500).json({ message: err });
@@ -252,7 +236,7 @@ module.exports.updateEmail = async(req, res) => {
                     if (!err) return res.send(docs);
                     if (err) return res.status(500).send({ message: err });
                 }
-            );
+            ).select('-code -secret_code');
         }
     } catch (err) {
         return res.status(500).json({ message: err });
@@ -281,7 +265,7 @@ module.exports.updatePrice = async(req, res) => {
                         if (!err) return res.send(docs);
                         if (err) return res.status(500).send({ message: err });
                     }
-                );
+                ).select('-code -secret_code');
             }
         }
     } catch (err) {
@@ -311,7 +295,7 @@ module.exports.updateTraining = async(req, res) => {
                         if (!err) return res.send(docs);
                         if (err) return res.status(500).send({ message: err });
                     }
-                );
+                ).select('-code -secret_code');
             }
         }
     } catch (err) {
@@ -333,7 +317,7 @@ module.exports.updateActive = async(req, res) => {
                 if (!err) return res.send(docs);
                 if (err) return res.status(500).send({ message: err });
             }
-        );
+        ).select('-code -secret_code');
     } catch (err) {
         return res.status(500).json({ message: err });
     }
@@ -353,7 +337,7 @@ module.exports.updateMember = async(req, res) => {
                 if (!err) return res.send(docs);
                 if (err) return res.status(500).send({ message: err });
             }
-        );
+        ).select('-code -secret_code');
     } catch (err) {
         return res.status(500).json({ message: err });
     }
@@ -379,7 +363,7 @@ module.exports.updateCode = async(req, res) => {
                     if (!err) return res.send(docs);
                     if (err) return res.status(500).send({ message: err });
                 }
-            );
+            ).select('-code -secret_code');
         }
     } catch (err) {
         return res.status(500).json({ message: err });
@@ -406,7 +390,7 @@ module.exports.updateSecretCode = async(req, res) => {
                     if (!err) return res.send(docs);
                     if (err) return res.status(500).send({ message: err });
                 }
-            );
+            ).select('-code -secret_code');
         }
     } catch (err) {
         return res.status(500).json({ message: err });
@@ -427,7 +411,7 @@ module.exports.updateAdministrator = async(req, res) => {
                 if (!err) return res.send(docs);
                 if (err) return res.status(500).send({ message: err });
             }
-        );
+        ).select('-code -secret_code');
     } catch (err) {
         return res.status(500).json({ message: err });
     }
@@ -447,7 +431,7 @@ module.exports.updateSuperAdministrator = async(req, res) => {
                 if (!err) return res.send(docs);
                 if (err) return res.status(500).send({ message: err });
             }
-        );
+        ).select('-code -secret_code');
     } catch (err) {
         return res.status(500).json({ message: err });
     }

@@ -24,3 +24,12 @@ module.exports.signInErrors = (err) => {
 
     return errors;
 }
+
+module.exports.addPhotoErrors = (err) => {
+    let errors = { format: '' };
+
+    if (err.message.includes('invalid file'))
+        errors.format = "Format incompatabile";
+
+    return errors
+}

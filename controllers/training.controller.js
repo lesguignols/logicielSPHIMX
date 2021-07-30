@@ -23,6 +23,7 @@ module.exports.getInfo = async(req, res) => {
 }
 
 module.exports.getByCurriculum = async(req, res) => {
+    console.log(req.body)
     TrainingModel.find({ curriculum: req.body.curriculum }, (err, docs) => {
         if (!err) res.send(docs);
         else res.status(401).send(err);
@@ -51,15 +52,48 @@ module.exports.getByCurriculumAndYear = async(req, res) => {
 }
 
 module.exports.addTraining = async(req, res) => {
-    const newTraining = new TrainingModel({
-        curriculum: req.body.curriculum,
-        wording: req.body.wording,
-        year: req.body.year
-    });
+    if (req.body.curriculum == "Licence") {
+        for (var i = 1; i <= 3; i++) {
+            const newTraining = new TrainingModel({
+                curriculum: req.body.curriculum,
+                wording: req.body.wording,
+                year: i
+            });
+            await newTraining.save();
+        }
+    } else if (req.body.curriculum == "Master") {
+        for (var i = 1; i <= 2; i++) {
+            const newTraining = new TrainingModel({
+                curriculum: req.body.curriculum,
+                wording: req.body.wording,
+                year: i
+            });
+            await newTraining.save();
+        }
+    } else if (req.body.curriculum == "Doctorat") {
+        for (var i = 1; i <= 3; i++) {
+            const newTraining = new TrainingModel({
+                curriculum: req.body.curriculum,
+                wording: req.body.wording,
+                year: i
+            });
+            await newTraining.save();
+        }
+    } else {
+        const newTraining = new TrainingModel({
+            curriculum: req.body.curriculum,
+            wording: req.body.wording,
+            year: 1
+        });
+        await newTraining.save();
+    }
+
 
     try {
-        const training = await newTraining.save();
-        return res.status(201).json(training);
+        TrainingModel.find({ curriculum: req.body.curriculum, wording: req.body.wording }, (err, docs) => {
+            if (!err) res.send(docs);
+            else res.status(401).send(err);
+        })
     } catch (err) {
         return res.status(400).send(err)
     }

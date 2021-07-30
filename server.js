@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config({ path: './config/.env' });
 require('./config/db');
 const { checkAdherent, requireAuth } = require('./middleware/auth.middleware');
-const app = express();
+const cors = require('cors');
 
 //const pour les routes
 const adherentRoutes = require('./routes/adherent.routes');
@@ -22,6 +22,18 @@ const saleRoutes = require('./routes/sale.routes');
 const slipCoinsRoutes = require('./routes/slip/coins.routes');
 const slipTicketRoutes = require('./routes/slip/ticket.routes');
 const trainingRoutes = require('./routes/training.routes');
+
+const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    'allowedHeaders': ['sessionId', 'Content-Type'],
+    'exposedHeaders': ['sessionId'],
+    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'preflightContinue': false
+}
+
+const app = express();
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

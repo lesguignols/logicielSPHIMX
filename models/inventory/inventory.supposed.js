@@ -2,11 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const inventorySupposedSchema = new Schema({
-    member: {
-        type: Schema.Types.ObjectId,
-        ref: 'adherent',
-        require: true
-    },
     date: String,
     products: {
         type: [{
@@ -45,28 +40,55 @@ inventorySupposedSchema.statics.sale = async function(product, quantity) {
 };
 
 inventorySupposedSchema.statics.bill = async function(product, quantity) {
+    var newProduct = {};
 
     var lastInventory = await this.findOne().sort('-date');
-    var listProducts = lastInventory.products;
-    var newProduct = {};
-    var newArray = [];
-    listProducts.forEach(element => {
-        if (element.product == product) {
+    if (lastInventory != null) {
+        var listProducts = lastInventory.products;
+        var newArray = [];
+        var productFind = false;
+        listProducts.forEach(element => {
+            if (element.product == product) {
+                newProduct = {
+                    _id: element._id,
+                    product: element.product,
+                    quantity: element.quantity + quantity
+                };
+                newArray.push(newProduct);
+                productFind = true;
+            } else {
+                newArray.push(element);
+            }
+        });
+        if (!productFind) {
             newProduct = {
-                element: element._id,
-                product: element.product,
-                quantity: element.quantity + quantity
+                product: product,
+                quantity: quantity
             };
             newArray.push(newProduct);
-        } else {
-            newArray.push(element);
         }
-    });
-    if (newArray != []) {
-        return this.findByIdAndUpdate(lastInventory._id, {
-            $set: { products: newArray }
-        }, { new: true });
+        if (newArray != []) {
+            return this.findByIdAndUpdate(lastInventory._id, {
+                $set: { products: newArray }
+            }, { new: true });
+        }
+    } else {
+        let today = new Date();
+        let date = parseInt(today.getMonth() + 1) + "-" + today.getDate() + "-" + today.getFullYear();
+
+        newProduct = {
+            product: product,
+            quantity: quantity
+        };
+
+        const newInventorySupposed = new InventorySupposedModel({
+            date: date,
+            products: newProduct
+        });
+
+        const inventorySupposed = await newInventorySupposed.save();
     }
+
 };
 
 const InventorySupposedModel = mongoose.model('inventorySupposed', inventorySupposedSchema);

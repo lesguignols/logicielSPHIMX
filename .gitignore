@@ -1,4 +1,6 @@
 node_modules
 config/.env
-request
+graphql/request
 lien
+client
+bdd

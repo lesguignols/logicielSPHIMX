@@ -28,7 +28,6 @@ module.exports.addInventorySupposed = async(req, res) => {
     let date = parseInt(today.getMonth() + 1) + "-" + today.getDate() + "-" + today.getFullYear();
 
     const newInventorySupposed = new InventorySupposedModel({
-        member: req.body.member,
         date: date,
         products: req.body.products
     });
